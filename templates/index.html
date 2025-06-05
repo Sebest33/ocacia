@@ -9,6 +9,35 @@
 </head>
 <body>
     <h1>Employee Map</h1>
+    <button id="toggleAdmin">Manage Employees</button>
+    <div id="adminPanel">
+        <form id="employeeForm" enctype="multipart/form-data">
+            <input type="hidden" name="id" id="empId">
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="text" name="address" placeholder="Address" required>
+            <input type="text" name="role" placeholder="Role">
+            <input type="text" name="region" placeholder="Region">
+            <input type="email" name="email" placeholder="Email">
+            <input type="text" name="phone" placeholder="Phone">
+            <input type="file" name="photo">
+            <button type="submit">Save</button>
+        </form>
+        <table id="employeeTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Role</th>
+                    <th>Region</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Photo</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
     <div id="map" style="height: 600px;"></div>
     <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 </body>

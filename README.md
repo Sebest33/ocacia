@@ -14,4 +14,4 @@ This project provides a small Flask application to manage employees and display 
    ```
 3. Open `http://localhost:5000/` in your browser.
 
-The `/admin` page lets you add, edit and delete employees. The main page shows them on the map.
+Use the "Manage Employees" button on the map page to add, edit or delete employees.

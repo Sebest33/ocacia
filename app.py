@@ -97,10 +97,58 @@ def delete(emp_id):
     db.session.commit()
     return redirect(url_for('admin'))
 
-@app.route('/api/employees')
+@app.route('/api/employees', methods=['GET', 'POST'])
 def api_employees():
+    if request.method == 'POST':
+        data = request.form
+        name = data.get('name')
+        address = data.get('address')
+        role = data.get('role')
+        region = data.get('region')
+        email = data.get('email')
+        phone = data.get('phone')
+        photo_file = request.files.get('photo')
+        photo_filename = None
+        if photo_file and photo_file.filename:
+            photo_filename = photo_file.filename
+            path = os.path.join(app.config['UPLOAD_FOLDER'], photo_filename)
+            photo_file.save(path)
+        lat, lon = geocode(address)
+        emp = Employee(name=name, address=address, latitude=lat, longitude=lon,
+                       role=role, region=region, email=email, phone=phone,
+                       photo=photo_filename)
+        db.session.add(emp)
+        db.session.commit()
+        return jsonify(emp.to_dict()), 201
     emps = Employee.query.all()
     return jsonify([e.to_dict() for e in emps])
+
+
+@app.route('/api/employees/<int:emp_id>', methods=['PUT', 'DELETE'])
+def api_employee_detail(emp_id):
+    emp = Employee.query.get_or_404(emp_id)
+    if request.method == 'PUT':
+        data = request.form
+        emp.name = data.get('name', emp.name)
+        emp.address = data.get('address', emp.address)
+        emp.role = data.get('role', emp.role)
+        emp.region = data.get('region', emp.region)
+        emp.email = data.get('email', emp.email)
+        emp.phone = data.get('phone', emp.phone)
+        photo_file = request.files.get('photo')
+        if photo_file and photo_file.filename:
+            photo_filename = photo_file.filename
+            path = os.path.join(app.config['UPLOAD_FOLDER'], photo_filename)
+            photo_file.save(path)
+            emp.photo = photo_filename
+        lat, lon = geocode(emp.address)
+        emp.latitude = lat
+        emp.longitude = lon
+        db.session.commit()
+        return jsonify(emp.to_dict())
+    db.session.delete(emp)
+    db.session.commit()
+    return '', 204
 
 # Simple geocoder using Nominatim
 

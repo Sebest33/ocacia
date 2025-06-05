@@ -1,3 +1,4 @@
 body { font-family: Arial, sans-serif; }
 table { border-collapse: collapse; width: 100%; }
 th, td { border: 1px solid #ccc; padding: 4px; }
+#adminPanel { background: #f5f5f5; padding: 10px; margin-bottom: 10px; display: none; }
