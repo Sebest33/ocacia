@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Employees</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Employees Administration</h1>
+    <form action="" method="POST" enctype="multipart/form-data">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="text" name="address" placeholder="Address" required>
+        <input type="text" name="role" placeholder="Role">
+        <input type="text" name="region" placeholder="Region">
+        <input type="email" name="email" placeholder="Email">
+        <input type="text" name="phone" placeholder="Phone">
+        <input type="file" name="photo">
+        <button type="submit">Add</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Role</th>
+                <th>Region</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Photo</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for e in employees %}
+            <tr>
+                <td>{{ e.name }}</td>
+                <td>{{ e.address }}</td>
+                <td>{{ e.role }}</td>
+                <td>{{ e.region }}</td>
+                <td>{{ e.email }}</td>
+                <td>{{ e.phone }}</td>
+                <td>{% if e.photo %}<img src="{{ url_for('static', filename='photos/' + e.photo) }}" width="40">{% endif %}</td>
+                <td>
+                    <a href="{{ url_for('edit', emp_id=e.id) }}">Edit</a>
+                    <form action="{{ url_for('delete', emp_id=e.id) }}" method="post" style="display:inline;">
+                        <button type="submit" onclick="return confirm('Delete?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
